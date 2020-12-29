@@ -1,0 +1,54 @@
+[
+  {
+    "type": 3,
+    "title": "MySQL",
+    "description": "The Phoenix Systems MySQL Community Edition 8.0.19 database image",
+    "note": "Deploys a MySQL Community Edition 8.0.19 instance.",
+    "categories": ["DATABASE"],
+    "registry" : "registry.artemis.phoenix.local:5000",
+    "platform": "linux",
+    "logo": "https://git.phoenix-systems.ch/phoenix-systems-public/portainer-templates/-/raw/master/stacks/mysql/logo.png",
+    "repository": {
+      "url": "https://git.phoenix-systems.ch/phoenix-systems-public/portainer-templates",
+      "stackfile": "stacks/mysql/docker-compose.yaml"
+    },
+    "env": [
+      {
+        "name": "DC_IMAGE_TAG",
+        "label": "PH Image Version",
+        "description": "Phoenix Systems Internal Image Version",
+        "select": [
+         {
+          "text": "1.8.3 / MySQL Community Edition 8.0.19",
+          "value": "1.8.3",
+          "default": true
+         },
+         {
+          "text": "1.8.2 / MySQL Community Edition 8.0.19",
+          "value": "1.8.2"
+         }
+      ]
+    },      
+      {
+        "name": "DC_PORT",
+        "label": "Mapped Port",
+        "description": "Mapped Port"
+      },      
+      {
+        "name": "TZ",
+        "label": "Timezone String eg. Europe/Zurich",
+        "description": "Timezone"
+      },      
+      {
+        "name": "DC_MYSQL_ROOT_PASSWORD",
+        "label": "MySQL Root Password",
+        "description": "MySQL Root Password"
+      },      
+      {
+        "name": "DC_MAX_PACKAGE",
+        "label": "Package Size",
+        "description": "The packet message buffer is initialized to net_buffer_length bytes, but can grow up to max_allowed_packet bytes when needed. This value by default is small, to catch large (possibly incorrect) packets."
+      }
+    ]
+  }
+]

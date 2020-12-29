@@ -1,0 +1,242 @@
+{
+	"version": "2",
+	"templates": [{
+		"type": 3,
+		"title": "MySQL",
+		"administrator_only": true,
+		"name": "MySQL",
+		"description": "The Phoenix Systems MySQL Community Edition database image",
+		"note": "Deploys a MySQL Community Edition instance.",
+		"categories": ["DATABASE", "SaaS"],
+		"platform": "linux",
+		"logo": "https://www.phoenix-systems.io/stacks/mysql/logo.png",
+		"repository": {
+			"url": "https://www.phoenix-systems.io",
+			"stackfile": "stacks/mysql/docker-compose.yaml"
+		},
+		"env": [{
+				"name": "DC_IMAGE_TAG",
+				"label": "MySQL Version Tag",
+				"description": "MySQL Version Tag",
+				"select": [{
+					"text": "MySQL Community Edition 8.0.22",
+					"value": "8.0.22",
+					"default": true
+				},{
+					"text": "MySQL Community Edition 8.0.19",
+					"value": "8.0.19"
+				}]
+			},
+			{
+				"name": "VOLUME_POSTFIX",
+				"label": "Volume Postfix",
+				"description": " eg. 'MYDATA'"
+			},
+			{
+				"name": "TZ",
+				"label": "Timezone",
+				"description": " eg. 'Europe/Zurich'"
+			},
+			{
+				"name": "DC_MYSQL_ROOT_PASSWORD",
+				"label": "MySQL Root Password",
+				"description": "MySQL Root Password"
+			},
+			{
+				"name": "DC_MAX_PACKAGE",
+				"label": "Package Size",
+				"description": "The packet message buffer is initialized to net_buffer_length bytes, but can grow up to max_allowed_packet bytes when needed. This value by default is small, to catch large (possibly incorrect) packets. e.g. 100M"
+			}
+		]
+	},{
+		"type": 3,
+		"title": "MongoDB",
+		"administrator_only": true,
+		"name": "MongoDB",
+		"description": "The Phoenix Systems MongoDB image",
+		"note": "Deploys a MongoDB instance.",
+		"categories": ["DATABASE", "SaaS"],
+		"platform": "linux",
+		"logo": "https://www.phoenix-systems.io/stacks/mongodb/logo_mongodb.png",
+		"repository": {
+			"url": "https://www.phoenix-systems.io",
+			"stackfile": "stacks/mongodb/docker-compose.yaml"
+		},
+		"env": [{
+				"name": "DC_IMAGE_TAG",
+				"label": "MongoDB Version Tag",
+				"description": "MongoDB Version Tag",
+				"select": [{
+					"text": "MongoDB 4.4.2",
+					"value": "4.4.2",
+					"default": true
+				},{
+					"text": "MongoDB 4.4.1",
+					"value": "4.4.1"
+				}]
+			},
+			{
+				"name": "VOLUME_POSTFIX",
+				"label": "Volume Postfix",
+				"description": " eg. 'MYDATA'"
+			},
+			{
+				"name": "TZ",
+				"label": "Timezone",
+				"description": " eg. 'Europe/Zurich'"
+			},
+			{
+				"name": "DC_MONGODB_ROOT_PASSWORD",
+				"label": "MongoDB Root Password",
+				"description": "MongoDB Root Password"
+			}
+		]
+	},{
+		"type": 3,
+		"title": "KORE Digital Asset Network Engine",
+		"administrator_only": true,
+		"name": "KORE Digital Asset Network Engine",
+		"description": "The foundation to move and store cryptocurrencies and digital assets 24/7 in a banking grade environment from the cloud.",
+		"note": "<h4>Service Description</h4>The foundation to move and store cryptocurrencies and digital assets 24/7 in a banking grade environment from the cloud.<br /><h4>Demo API Key</h4>87F46F418F5481F79AC613781051007042D8F588BCDF3DF1FFB073FB9C1E77CB",
+		"categories": ["CRYPTO", "KORE", "SaaS"],
+		"platform": "linux",
+		"logo": "https://www.phoenix-systems.io/stacks/kore-custody/custody_logo.png",
+		"repository": {
+			"url": "https://www.phoenix-systems.io",
+			"stackfile": "stacks/kore-custody/docker-compose.yaml"
+		},
+		"env": [{
+				"name": "DC_IMAGE_TAG",
+				"label": "Custody Version Tag",
+				"description": "Custody Version Tag",
+				"select": [{
+					"text": "Custody 1.0.6",
+					"value": "1.0.6",
+					"default": true
+				}]
+			},
+			{
+				"name": "VOLUME_POSTFIX",
+				"label": "Volume Postfix",
+				"description": " eg. 'MYDATA'"
+			},{
+				"name": "DC_PUBLIC_HOSTNAME",
+				"label": "Public Tld",
+				"description": " eg. 'mydomain.com' -> testnet-custody.mydomain.com"
+			},{
+				"name": "DC_PRIVATE_HOSTNAME",
+				"label": "Private Tld",
+				"description": " eg. 'mydomain.local' -> testnet-custody.mydomain.local"
+			},{
+				"name": "DC_NETWORK",
+				"label": "Network Environment (MAINNET or TESTNET)",
+				"description": "Network Environment (MAINNET or TESTNET), for ethreum the testnet is Ropsten.",
+				"select": [{
+					"text": "Mainnet",
+					"value": "mainnet",
+					"default": true
+				},{
+					"text": "Testnet",
+					"value": "testnet",
+					"default": true
+				}]
+			},
+			{
+				"name": "TZ",
+				"label": "Timezone",
+				"description": " eg. 'Europe/Zurich'"
+			}
+		]
+	},{
+		"type": 3,
+		"title": "Jetbrains TeamCity",
+		"administrator_only": true,
+		"name": "Jetbrains TeamCity",
+		"description": "Jetbrains TeamCity instance with one agent.",
+		"note": "Jetbrains TeamCity instance with one agent.",
+		"categories": ["CI/CD Pipeline", "SaaS"],
+		"platform": "linux",
+		"logo": "https://www.phoenix-systems.io/stacks/teamcity/logo_teamcity.png",
+		"repository": {
+			"url": "https://www.phoenix-systems.io",
+			"stackfile": "stacks/teamcity/docker-compose.yaml"
+		},
+		"env": [{
+				"name": "DC_IMAGE_TAG",
+				"label": "TeamCity Version Tag",
+				"description": "TeamCity Version Tag",
+				"select": [{
+					"text": "TeamCity 2020.2",
+					"value": "2020.2",
+					"default": true
+				}]
+			},
+			{
+				"name": "VOLUME_POSTFIX",
+				"label": "Volume Postfix",
+				"description": " eg. 'MYDATA'"
+			},{
+				"name": "SERVER_PORT",
+				"label": "Server Port",
+				"description": " eg. '10002'"
+			},{
+				"name": "DATABASE_PASSWORD",
+				"label": "Postgres Root Password",
+				"description": "Postgres Root Password"
+			},
+			{
+				"name": "DC_TIMEZONE",
+				"label": "Timezone",
+				"description": " eg. 'Europe/Zurich'"
+			}
+		]
+	},{
+		"type": 3,
+		"title": "Duda Wordpress Stack",
+		"administrator_only": true,
+		"name": "Duda Wordpress Stack",
+		"description": "Duda Wordpress Stack",
+		"note": "Duda Wordpress Stack",
+		"categories": ["CMS", "SaaS"],
+		"platform": "linux",
+		"logo": "https://www.phoenix-systems.io/stacks/dudawordpress/logo_wp.png",
+		"repository": {
+			"url": "https://www.phoenix-systems.io",
+			"stackfile": "stacks/dudawordpress/docker-compose.yaml"
+		},
+		"env": [{
+				"name": "DC_VERSION_TAG",
+				"label": "Duda Wordpress Version Tag",
+				"description": "Duda Wordpress Version Tag",
+				"select": [{
+					"text": "Duda Wordpress e7b0ce0",
+					"value": "e7b0ce0",
+					"default": true
+				}]
+			},
+			{
+				"name": "VOLUME_POSTFIX",
+				"label": "Volume Postfix",
+				"description": " eg. 'MYDATA'"
+			},{
+				"name": "DC_MYSQL_PORT",
+				"label": "MySQL Access Port",
+				"description": " eg. '10002'"
+			},{
+				"name": "DC_MYSQL_ROOT_PASSWORD",
+				"label": "MySQL Root Password",
+				"description": "MySQL Root Password"
+			},
+			{
+				"name": "DC_PUBLIC_HOSTNAME",
+				"label": "Public Tld",
+				"description": " eg. 'test.dudagroup.ch'"
+			},
+			{
+				"name": "DC_TIMEZONE",
+				"label": "Timezone",
+				"description": " eg. 'Europe/Zurich'"
+			}
+		]
+	}]
+}

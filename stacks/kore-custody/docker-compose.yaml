@@ -1,0 +1,77 @@
+version: '2'
+services:
+  solr:
+    image: repo.build-prod.phoenix-systems.ch/phoenix-docker/koretech/unique-id-solr:${DC_IMAGE_TAG}
+    restart: unless-stopped
+    expose:
+      - 8983
+    networks:
+      - web
+    volumes:
+      - custody-solr-${VOLUME_POSTFIX}:/opt/solr/server/solr/mycores
+    environment:
+      - "LC_ALL=C.UTF-8"
+      - "TZ=${DC_TIMEZONE}"      
+    labels:
+      - "traefik.docker.network=web"
+      - "traefik.enable=true"
+      - "traefik.port=8983"
+      - "traefik.frontend.entryPoints=http"
+      - "traefik.frontend.rule=Host:solr-${DC_PRIVATE_HOSTNAME}"
+  tomee:
+    image: repo.build-prod.phoenix-systems.ch/phoenix-docker/koretech/unique-id-${DC_NETWORK}:${DC_IMAGE_TAG}
+    restart: unless-stopped
+    expose:
+      - 8080
+    networks:
+      - web
+    volumes:
+      - custody-tomee-external-${VOLUME_POSTFIX}:/usr/local/tomee/external
+      - /conf:/conf
+    depends_on:
+      - solr
+    links:
+      - solr
+    environment:
+      - "LC_ALL=C.UTF-8"
+      - "TZ=${DC_TIMEZONE}"
+      - "JAVA_OPTS=-Xmx2048m -Xms512m -XX:MaxPermSize=256m"
+    labels:
+      - "traefik.docker.network=web"
+      - "traefik.enable=true"
+      - "traefik.port=8080"
+      - "traefik.frontend.entryPoints=http"
+      - "traefik.frontend.rule=Host:tomee-${DC_PRIVATE_HOSTNAME}"
+  payara:
+    image: repo.build-prod.phoenix-systems.ch/phoenix-docker/koretech/business-api-${DC_NETWORK}:${DC_IMAGE_TAG}    
+    restart: always
+    expose:
+      - 8080
+      - 4848
+    networks:
+      - web
+    volumes:
+      - custody-payara-external-${VOLUME_POSTFIX}:/usr/local/payara/external
+    links:
+      - tomee
+    environment:      
+      - "LC_ALL=C.UTF-8"
+      - "TZ=${DC_TIMEZONE}"
+      - "PH_HOSTNAME=${DC_PUBLIC_HOSTNAME}"
+      - "JAVA_OPTS=-Xms512m -Xmx4096m -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=256m -XX:+UseConcMarkSweepGC -XX:SoftRefLRUPolicyMSPerMB=1 -XX:CMSInitiatingOccupancyFraction=70 -XX:+UseCMSInitiatingOccupancyOnly"
+    labels:
+      - "traefik.docker.network=web"
+      - "traefik.enable=true"
+      - "traefik.port=8080"
+      - "traefik.app.frontend.entryPoints=https"
+      - "traefik.app.frontend.rule=Host:${DC_PUBLIC_HOSTNAME}"
+      - "traefik.app.frontend.port=8080"
+      - "traefik.admin.frontend.entryPoints=https"
+      - "traefik.admin.frontend.rule=Host:admin-${DC_PUBLIC_HOSTNAME}"
+      - "traefik.admin.port=4848"
+      - "traefik.http.middlewares.limit.buffering.maxRequestBodyBytes=200000000"
+      - "traefik.http.middlewares.limit.buffering.maxResponseBodyBytes=200000000"
+networks:
+    web:
+      external:
+        name: web

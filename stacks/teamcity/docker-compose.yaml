@@ -1,0 +1,53 @@
+version: '2'
+services:
+  postgres:
+    image: postgres:12.1
+    restart: unless-stopped
+    expose:
+     - 5432
+    volumes:
+     - postgresql-${VOLUME_POSTFIX}:/var/lib/postgresql/data
+    environment:
+     - TZ=${DC_TIMEZONE}     
+     - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+     - POSTGRES_USER=teamcity
+     - POSTGRES_DB=teamcity
+  server:
+    image: jetbrains/teamcity-server:${DC_IMAGE_TAG}
+    restart: unless-stopped
+    ports:
+      - ${SERVER_PORT}:8111
+    networks:
+      - web
+      - default
+    volumes:
+      - teamcity-data-${VOLUME_POSTFIX}:/data/teamcity_server/datadir
+      - teamcity-logs-${VOLUME_POSTFIX}:/opt/teamcity/logs
+    environment:
+     - TZ=${DC_TIMEZONE}
+    depends_on:
+      - postgres
+  agent-1:
+    image: jetbrains/teamcity-agent:${DC_IMAGE_TAG}-linux-sudo
+    restart: unless-stopped
+    user: root
+    privileged: true
+    depends_on:
+      - server
+    volumes:
+      - /etc/docker/daemon.json:/etc/docker/daemon.json
+      - /var/run/docker.sock:/var/run/docker.sock
+      - teamcity-agent-1-conf-${VOLUME_POSTFIX}:/data/teamcity_agent/conf
+      - ./opt/buildagent/work:/opt/buildagent/work
+      - ./opt/buildagent/temp:/opt/buildagent/temp
+      - ./opt/buildagent/tools:/opt/buildagent/tools
+      - ./opt/buildagent/plugins:/opt/buildagent/plugins
+      - ./opt/buildagent/system:/opt/buildagent/system
+    environment:
+      - SERVER_URL=http://server:${SERVER_PORT}
+      - AGENT_NAME=agent-1
+      - TZ=${DC_TIMEZONE}
+networks:
+    web:
+      external:
+        name: web

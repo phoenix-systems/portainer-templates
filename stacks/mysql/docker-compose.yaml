@@ -1,0 +1,19 @@
+version: '2'
+services:
+  mysql:    
+    image: repo.build-prod.phoenix-systems.ch/phoenix-docker/phoenix/mysql-x64:${DC_IMAGE_TAG}
+    restart: unless-stopped
+    ports:
+      - ${DC_PORT}:3306
+    volumes:
+      - mysql-${VOLUME_POSTFIX}:/var/lib/mysql
+    networks:
+      - web
+    command: mysqld --max_allowed_packet=${DC_MAX_PACKAGE} --mysqlx_max_allowed_packet=${DC_MAX_PACKAGE}--sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES --max_connections=301 --max_connect_errors=9999999 --max_heap_table_size=256M --max_allowed_packet=1024M --sort_buffer_size=2M --join_buffer_size=128M --thread_cache_size=64 --query_alloc_block_size=16K --thread_stack=256K --tmp_table_size=128M --innodb_buffer_pool_size=2G --innodb_log_buffer_size=64M --innodb_max_dirty_pages_pct=80 --innodb_flush_method=O_DIRECT --innodb_lock_wait_timeout=120 --innodb_commit_concurrency=0 --innodb_open_files=2000 --table_open_cache=3000 --innodb_flush_log_at_trx_commit=1 --innodb_write_io_threads=16 --innodb_read_io_threads=16 --innodb_log_file_size=256M --innodb_doublewrite=0 --innodb_io_capacity=7500 --event_scheduler=ON --skip-name-resolve --binlog-expire-logs-seconds=2592000 --default-authentication-plugin=mysql_native_password
+    environment:
+      - TZ=${DC_TIMEZONE}
+      - MYSQL_ROOT_PASSWORD=${DC_MYSQL_ROOT_PASSWORD}     
+networks:
+    web:
+      external:
+        name: web

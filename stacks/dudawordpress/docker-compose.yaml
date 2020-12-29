@@ -1,0 +1,49 @@
+version: '2'
+services:
+  wordpress:    
+    image: repo.build-prod.phoenix-systems.ch/phoenix-docker/dudapress-boilerplate-wp/wordpress:${DC_VERSION_TAG}
+    restart: unless-stopped
+    expose:
+      - 80
+    volumes:
+      - wordpress-${VOLUME_POSTFIX}:/var/www/html/wp-content/uploads
+    networks:
+      - web
+    depends_on:
+      - mysql
+    environment:
+      - TZ=${DC_TIMEZONE}
+      - "WORDPRESS_DB_HOST=mysql:3306"
+      - "WORDPRESS_DB_USER=root"
+      - "WORDPRESS_DB_PASSWORD=${DC_MYSQL_ROOT_PASSWORD}"
+      - "WORDPRESS_DB_NAME=wordpress"
+      - "WORDPRESS_HOME=https://${DC_PUBLIC_HOSTNAME}"
+      - "WORDPRESS_SECRETS=d3bc3b92bfaeb1e878cc4ad4c513834345da3ec9,4e3eed3e50b3aa524cb0e055a563ea875f4e52aa,09b408fed65b1a09bda300d44a8bbebc394473db,e2e9aec03cd53f9d3175fb65596e052ba6847e17,d3a78d50a8272d38596337a872310abe24f787a3,768b18e54280011674c7d152f4fb8d7bd78e4d4a,8792a3b0cdea7126abfa2f8b9a0d637abaf9d699,4bafb24aba81d115b71116902b2a87fd9f3b9a06"
+      - "LETSENCRYPT_EMAIL=dev@dudagroup.com"
+      - "LETSENCRYPT_HOST=${DC_PUBLIC_HOSTNAME}"
+      - "VIRTUAL_HOST=${DC_PUBLIC_HOSTNAME}"
+    labels:
+      - "traefik.docker.network=web"
+      - "traefik.enable=true"
+      - "traefik.port=80"
+      - "traefik.frontend.entryPoints=https"
+      - "traefik.frontend.rule=Host:${DC_PUBLIC_HOSTNAME}"
+  mysql:    
+    image: repo.build-prod.phoenix-systems.ch/phoenix-docker/phoenix/mysql-x64:8.0.22
+    restart: unless-stopped
+    ports:
+      - ${DC_MYSQL_PORT}:3306
+    expose:
+      - 3306      
+    volumes:
+      - mysql-${VOLUME_POSTFIX}:/var/lib/mysql
+    networks:
+      - web
+    command: mysqld --max_allowed_packet=1000M --mysqlx_max_allowed_packet=1000M--sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES --max_connections=301 --max_connect_errors=9999999 --max_heap_table_size=256M --max_allowed_packet=1024M --sort_buffer_size=2M --join_buffer_size=128M --thread_cache_size=64 --query_alloc_block_size=16K --thread_stack=256K --tmp_table_size=128M --innodb_buffer_pool_size=2G --innodb_log_buffer_size=64M --innodb_max_dirty_pages_pct=80 --innodb_flush_method=O_DIRECT --innodb_lock_wait_timeout=120 --innodb_commit_concurrency=0 --innodb_open_files=2000 --table_open_cache=3000 --innodb_flush_log_at_trx_commit=1 --innodb_write_io_threads=16 --innodb_read_io_threads=16 --innodb_log_file_size=256M --innodb_doublewrite=0 --innodb_io_capacity=7500 --event_scheduler=ON --skip-name-resolve --binlog-expire-logs-seconds=2592000 --default-authentication-plugin=mysql_native_password
+    environment:
+      - TZ=${DC_TIMEZONE}
+      - MYSQL_ROOT_PASSWORD=${DC_MYSQL_ROOT_PASSWORD}     
+networks:
+    web:
+      external:
+        name: web

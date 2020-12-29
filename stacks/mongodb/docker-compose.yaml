@@ -1,0 +1,18 @@
+version: '2'
+services:
+  mongodb_container:
+    image: mongo:${DC_IMAGE_TAG}   
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=${DC_MONGODB_ROOT_PASSWORD} 
+      - TZ=${DC_TIMEZONE}      
+    ports:
+      - ${DC_PORT}:27017
+    volumes:
+      - mongodb-${VOLUME_POSTFIX}:/data/db
+    networks:
+      - web    
+networks:
+    web:
+      external:
+        name: web
