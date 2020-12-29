@@ -11,7 +11,7 @@
 		"platform": "linux",
 		"logo": "https://www.phoenix-systems.io/stacks/mysql/logo.png",
 		"repository": {
-			"url": "https://www.phoenix-systems.io",
+			"url": "https://github.com/phoenix-systems/portainer-templates",
 			"stackfile": "stacks/mysql/docker-compose.yaml"
 		},
 		"env": [{
@@ -59,7 +59,7 @@
 		"platform": "linux",
 		"logo": "https://www.phoenix-systems.io/stacks/mongodb/logo_mongodb.png",
 		"repository": {
-			"url": "https://www.phoenix-systems.io",
+			"url": "https://github.com/phoenix-systems/portainer-templates",
 			"stackfile": "stacks/mongodb/docker-compose.yaml"
 		},
 		"env": [{
@@ -102,7 +102,7 @@
 		"platform": "linux",
 		"logo": "https://www.phoenix-systems.io/stacks/kore-custody/custody_logo.png",
 		"repository": {
-			"url": "https://www.phoenix-systems.io",
+			"url": "https://github.com/phoenix-systems/portainer-templates",
 			"stackfile": "stacks/kore-custody/docker-compose.yaml"
 		},
 		"env": [{
@@ -158,7 +158,7 @@
 		"platform": "linux",
 		"logo": "https://www.phoenix-systems.io/stacks/teamcity/logo_teamcity.png",
 		"repository": {
-			"url": "https://www.phoenix-systems.io",
+			"url": "https://github.com/phoenix-systems/portainer-templates",
 			"stackfile": "stacks/teamcity/docker-compose.yaml"
 		},
 		"env": [{
@@ -201,7 +201,7 @@
 		"platform": "linux",
 		"logo": "https://www.phoenix-systems.io/stacks/dudawordpress/logo_wp.png",
 		"repository": {
-			"url": "https://www.phoenix-systems.io",
+			"url": "https://github.com/phoenix-systems/portainer-templates",
 			"stackfile": "stacks/dudawordpress/docker-compose.yaml"
 		},
 		"env": [{
