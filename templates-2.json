@@ -167,7 +167,7 @@
 				"description": "TeamCity Version Tag",
 				"select": [{
 					"text": "TeamCity 2020.2",
-					"value": "2020.2",
+					"value": "2020.2.1",
 					"default": true
 				}]
 			},
